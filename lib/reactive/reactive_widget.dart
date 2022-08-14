@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:reactive_widget/reactive_wm.dart';
+import 'package:reactive_widget/reactive/reactive_wm.dart';
 
 // ignore: must_be_immutable
 abstract class ReactiveWidget<T> extends StatelessWidget {

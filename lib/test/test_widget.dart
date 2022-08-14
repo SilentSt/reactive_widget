@@ -1,7 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
-import 'package:reactive_widget/reactive_widget.dart';
+import 'package:reactive_widget/reactive/reactive_widget.dart';
 
 class TestWidget extends ReactiveWidget<Color> {
   TestWidget({

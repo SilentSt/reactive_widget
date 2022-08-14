@@ -2,10 +2,9 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:reactive_widget/reactive_provider.dart';
-import 'package:reactive_widget/reactive_widget.dart';
+import 'package:reactive_widget/test/test_provider.dart';
 
-import 'test_widget.dart';
+import 'test/test_widget.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,36 +17,33 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Provider(
-        create: (context) => ReactiveProvider(
-          create: (context) {},
-        ),
-        child: App(),
+        create: (context) => TestWidgetModel(TestWidget()),
+        child: const App(),
       ),
     );
   }
 }
 
 class App extends StatelessWidget {
-  App({Key? key}) : super(key: key);
-
-  final child = TestWidget();
+  const App({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: child,
+        child: context.read<TestWidgetModel>().widget,
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => child.update(
+      floatingActionButton: FloatingActionButton(onPressed: () {
+        final reactiveProvider = context.read<TestWidgetModel>();
+        reactiveProvider.update(
           Color.fromARGB(
             Random().nextInt(255),
             Random().nextInt(255),
             Random().nextInt(255),
             Random().nextInt(255),
           ),
-        ),
-      ),
+        );
+      }),
     );
   }
 }
