@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:reactive_widget/test/test_provider.dart';
+import 'package:reactive_widget/test/test_wm.dart';
 
 import 'test/test_widget.dart';
 
