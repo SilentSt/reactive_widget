@@ -8,11 +8,9 @@ main.dart
 
 ```dart
 import 'dart:math';
-
+import 'package:example/test_wm.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sbeu_pattern_test/test_widget.dart';
-import 'package:sbeu_pattern_test/test_wm.dart';
 
 void main() {
   runApp(const MyApp());
@@ -25,7 +23,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Provider(
-        create: (context) => TestWidgetModel(TestWidget()),
+        create: (ctx) => TestWidgetModel(),
         child: const App(),
       ),
     );
@@ -43,7 +41,7 @@ class App extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(onPressed: () {
         final reactiveProvider = context.read<TestWidgetModel>();
-        reactiveProvider.update(
+        reactiveProvider.event(
           Color.fromARGB(
             Random().nextInt(255),
             Random().nextInt(255),
@@ -55,20 +53,26 @@ class App extends StatelessWidget {
     );
   }
 }
+
 ```
 test_widget.dart
 
 ```dart
 
+// ignore_for_file: must_be_immutable
+
+import 'package:example/test_wm.dart';
 import 'package:flutter/material.dart';
 import 'package:sbeu_reactive_pattern/sbeu_reactive_pattern.dart';
 
 class TestWidget extends ReactiveWidget<Color> {
   TestWidget({
     Key? key,
+    required TestWidgetModel wm,
   }) : super(
           key: key,
           initialValue: Colors.redAccent,
+          wm: wm,
         );
 
   @override
@@ -83,21 +87,23 @@ class TestWidget extends ReactiveWidget<Color> {
     );
   }
 }
+
 ```
 
 test_wm.dart
 ```dart
-import 'package:sbeu_reactive_pattern/sbeu_reactive_pattern.dart';
+import 'package:example/test_widget.dart';
+import 'package:flutter/material.dart';
+import 'package:sbeu_reactive_pattern/reactive/reactive_wm.dart';
 
-class TestWidgetModel<T> {
-  TestWidgetModel(this._widget);
+class TestWidgetModel extends ReactiveWidgetModel<Color> {
+  TestWidgetModel() {
+    init();
+  }
 
-  final ReactiveWidget _widget;
-
-  ReactiveWidget get widget => _widget;
-
-  void update(T event) {
-    _widget.wm.event(event);
+  void init() {
+    setWidget(TestWidget(wm: this));
   }
 }
+
 ```
