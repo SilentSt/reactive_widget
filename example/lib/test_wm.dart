@@ -8,6 +8,10 @@ class TestWidgetModel extends ReactiveWidgetModel<Color> {
   }
 
   void init() {
-    setWidget(TestWidget(wm: this));
+    setWidget(TestWidget(
+      wm: this,
+      stream: controller,
+    ));
   }
+
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sbeu_reactive_pattern/reactive/reactive_container.dart';
 import 'reactive_wm.dart';
 
 // ignore: must_be_immutable
@@ -6,18 +7,16 @@ abstract class ReactiveWidget<T> extends StatelessWidget {
   ReactiveWidget({
     Key? key,
     this.initialValue,
-    required ReactiveWidgetModel<T> wm,
-  }) : super(key: key) {
-    wm = wm;
-    stream = wm.controller;
-  }
+    required this.wm,
+    required this.stream,
+  }) : super(key: key);
 
-  late final ReactiveWidgetModel<T> wm;
-  late final Stream<T> stream;
+  final ReactiveWidgetModel<T> wm;
+  final Stream<T> stream;
   final T? initialValue;
 
-  T? val;
-  bool needInitializeStream = true;
+  final ReactiveContainer<T?> container = ReactiveContainer<T?>();
+  final ReactiveContainer<bool> needInitializeStream = ReactiveContainer<bool>(value: true);
 
   @override
   Widget build(BuildContext context) {
@@ -28,17 +27,17 @@ abstract class ReactiveWidget<T> extends StatelessWidget {
 
   void initState(BuildContext context) {
     if (initialValue != null) {
-      val ??= initialValue;
+      container.value ??= initialValue;
     }
-    if (needInitializeStream) {
+    if (needInitializeStream.value!) {
       _subscribe(context);
-      needInitializeStream = false;
+      needInitializeStream.value = false;
     }
   }
 
   void _subscribe(BuildContext context) {
     stream.listen((event) {
-      val = event;
+      container.value = event;
       (context as Element).markNeedsBuild();
     });
   }
