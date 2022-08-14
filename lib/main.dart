@@ -1,7 +1,11 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:reactive_widget/reactive_provider.dart';
 import 'package:reactive_widget/reactive_widget.dart';
+
+import 'test_widget.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,35 +16,36 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ReactiveWidget<Color> coloredBox = ReactiveWidget<Color>(
-      initialValue: Colors.amber,
-      element: (val) => SizedBox(
-        height: 300,
-        width: 300,
-        child: ColoredBox(
-          color: val,
+    return MaterialApp(
+      home: Provider(
+        create: (context) => ReactiveProvider(
+          create: (context) {},
         ),
+        child: App(),
       ),
     );
+  }
+}
 
-    return MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: coloredBox,
-        ),
-        floatingActionButton: Row(
-          children: [
-            FloatingActionButton(
-              onPressed: () => coloredBox.wm.event(
-                Color.fromARGB(
-                  Random().nextInt(255),
-                  Random().nextInt(255),
-                  Random().nextInt(255),
-                  Random().nextInt(255),
-                ),
-              ),
-            ),
-          ],
+class App extends StatelessWidget {
+  App({Key? key}) : super(key: key);
+
+  final child = TestWidget();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: child,
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => child.update(
+          Color.fromARGB(
+            Random().nextInt(255),
+            Random().nextInt(255),
+            Random().nextInt(255),
+            Random().nextInt(255),
+          ),
         ),
       ),
     );
