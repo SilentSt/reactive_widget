@@ -6,9 +6,9 @@ abstract class ReactiveWidget<T> extends StatelessWidget {
   ReactiveWidget({
     Key? key,
     this.initialValue,
-    ReactiveWidgetModel<T>? wm,
+    required ReactiveWidgetModel<T> wm,
   }) : super(key: key) {
-    wm = wm ?? ReactiveWidgetModel<T>();
+    wm = wm;
     stream = wm.controller;
   }
 
