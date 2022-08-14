@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:reactive_widget/reactive/reactive_wm.dart';
+import 'reactive_wm.dart';
 
 // ignore: must_be_immutable
 abstract class ReactiveWidget<T> extends StatelessWidget {
@@ -18,9 +18,12 @@ abstract class ReactiveWidget<T> extends StatelessWidget {
 
   T? val;
   bool needInitializeStream = true;
+
   @override
   Widget build(BuildContext context) {
-    throw UnimplementedError();
+    throw UnimplementedError(
+      'You need to ovverride Widget build(BuildContext context){}',
+    );
   }
 
   void initState(BuildContext context) {

@@ -1,4 +1,4 @@
-import 'package:reactive_widget/reactive/reactive_widget.dart';
+import 'package:sbeu_reactive_pattern/sbeu_reactive_pattern.dart';
 
 class TestWidgetModel<T> {
   TestWidgetModel(this._widget);
@@ -10,5 +10,4 @@ class TestWidgetModel<T> {
   void update(T event) {
     _widget.wm.event(event);
   }
-  
 }
