@@ -5,6 +5,7 @@ class ReactiveWidget<T> extends StatefulWidget {
   ReactiveWidget({
     Key? key,
     required this.element,
+    this.initialValue,
   }) : super(key: key) {
     wm = ReactiveWidgetModel<T>();
     stream = wm.controller;
@@ -12,6 +13,7 @@ class ReactiveWidget<T> extends StatefulWidget {
 
   late final ReactiveWidgetModel<T> wm;
   late final Stream<T> stream;
+  final T? initialValue;
   final Widget Function(dynamic value) element;
 
   @override
@@ -30,6 +32,9 @@ class _ReactiveWidgetState<T> extends State<ReactiveWidget<T>> {
         );
       },
     );
+    if (widget.initialValue != null && val == null) {
+      val = widget.initialValue;
+    }
     super.initState();
   }
 
