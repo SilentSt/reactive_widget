@@ -1,6 +1,6 @@
 ## Getting started
 
-Используйте Provider для реализации
+
 
 ## Example
 
