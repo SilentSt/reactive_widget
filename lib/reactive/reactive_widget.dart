@@ -6,10 +6,10 @@ abstract class ReactiveWidget<T> extends StatelessWidget {
   ReactiveWidget({
     Key? key,
     this.initialValue,
+    ReactiveWidgetModel<T>? wm,
   }) : super(key: key) {
-    wm = ReactiveWidgetModel<T>();
+    wm = wm ?? ReactiveWidgetModel<T>();
     stream = wm.controller;
-    stream.listen((event) {});
   }
 
   late final ReactiveWidgetModel<T> wm;
@@ -34,10 +34,6 @@ abstract class ReactiveWidget<T> extends StatelessWidget {
       _subscribe(context);
       needInitializeStream = false;
     }
-  }
-
-  void update(T event) {
-    wm.event(event);
   }
 
   void _subscribe(BuildContext context) {

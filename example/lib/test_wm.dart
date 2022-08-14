@@ -1,13 +1,13 @@
-import 'package:sbeu_reactive_pattern/sbeu_reactive_pattern.dart';
+import 'package:example/test_widget.dart';
+import 'package:flutter/material.dart';
+import 'package:sbeu_reactive_pattern/reactive/reactive_wm.dart';
 
-class TestWidgetModel<T> {
-  TestWidgetModel(this._widget);
+class TestWidgetModel extends ReactiveWidgetModel<Color> {
+  TestWidgetModel() {
+    init();
+  }
 
-  final ReactiveWidget _widget;
-
-  ReactiveWidget get widget => _widget;
-
-  void update(T event) {
-    _widget.wm.event(event);
+  void init() {
+    setWidget(TestWidget(wm: this));
   }
 }

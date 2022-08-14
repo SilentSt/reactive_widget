@@ -1,9 +1,8 @@
 import 'dart:math';
-
-import 'package:example/test_widget.dart';
 import 'package:example/test_wm.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sbeu_reactive_pattern/sbeu_reactive_pattern.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,7 +15,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Provider(
-        create: (context) => TestWidgetModel(TestWidget()),
+        create: (ctx) => TestWidgetModel(),
         child: const App(),
       ),
     );
@@ -34,7 +33,7 @@ class App extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(onPressed: () {
         final reactiveProvider = context.read<TestWidgetModel>();
-        reactiveProvider.update(
+        reactiveProvider.event(
           Color.fromARGB(
             Random().nextInt(255),
             Random().nextInt(255),
