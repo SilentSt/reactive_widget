@@ -1,7 +1,5 @@
-import 'dart:math';
-import 'package:example/test_wm.dart';
+import 'package:example/test_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,11 +10,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Provider(
-        create: (ctx) => TestWidgetModel(),
-        child: const App(),
-      ),
+    return const MaterialApp(
+      home: App(),
     );
   }
 }
@@ -28,19 +23,8 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: context.read<TestWidgetModel>().widget,
+        child: TestWidget(),
       ),
-      floatingActionButton: FloatingActionButton(onPressed: () {
-        final reactiveProvider = context.read<TestWidgetModel>();
-        reactiveProvider.event(
-          Color.fromARGB(
-            Random().nextInt(255),
-            Random().nextInt(255),
-            Random().nextInt(255),
-            Random().nextInt(255),
-          ),
-        );
-      }),
     );
   }
 }

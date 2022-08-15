@@ -1,6 +1,6 @@
 name: sbeu_reactive_pattern
 description: Reactive library to immidiatly updating user interface
-version: 0.1.0
+version: 0.1.1
 homepage: https://github.com/SilentSt/reactive_widget
 
 environment:

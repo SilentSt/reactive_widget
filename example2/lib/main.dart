@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'calc_wm.dart';
+
+import 'calc_widget.dart';
 
 
 void main() {
@@ -17,8 +17,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       home: Row(
         children: [
-          Flexible(child: CalcWidgetModel().widget),
-          Flexible(child: CalcWidgetModel().widget),
+          Flexible(child: CalcWidget()),
+          Flexible(child: CalcWidget()),
         ],
       )      
     );

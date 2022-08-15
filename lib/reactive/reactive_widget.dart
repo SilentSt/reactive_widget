@@ -9,20 +9,22 @@ abstract class ReactiveWidget<T> extends StatelessWidget {
     Key? key,
     this.initialValue,
     required this.wm,
-    required this.stream,
-  }) : super(key: key);
+  }) : super(key: key);  
 
   /// A model that is used to pass data to the widget.
   final ReactiveWidgetModel<T> wm;
-  /// A stream that is used to pass data to the widget.
-  final Stream<T> stream;
+
   /// A way to pass data to the widget.
   final T? initialValue;
 
   /// A container that holds the value of the stream.
   final ReactiveContainer<T?> container = ReactiveContainer<T?>();
+
   /// Used to prevent the stream from being initialized more than once.
-  final ReactiveContainer<bool> needInitializeStream = ReactiveContainer<bool>(value: true);
+  final ReactiveContainer<bool> needInitializeStream =
+      ReactiveContainer<bool>(value: true);
+
+  ///init state function
 
   /// Need to be override
   @override
@@ -33,7 +35,7 @@ abstract class ReactiveWidget<T> extends StatelessWidget {
   }
 
   /// If the stream has not been initialized, then initialize it
-  /// 
+  ///
   /// Args:
   ///   context (BuildContext): BuildContext
   void initState(BuildContext context) {
@@ -46,14 +48,14 @@ abstract class ReactiveWidget<T> extends StatelessWidget {
     }
   }
 
- /// _subscribe() is a function that takes a BuildContext as an argument and returns nothing. It listens
- /// to the stream and updates the container's value with the event. It then marks the context as
- /// needing to be rebuilt
- /// 
- /// Args:
- ///   context (BuildContext): The BuildContext of the widget that is using the StreamBuilder.
+  /// _subscribe() is a function that takes a BuildContext as an argument and returns nothing. It listens
+  /// to the stream and updates the container's value with the event. It then marks the context as
+  /// needing to be rebuilt
+  ///
+  /// Args:
+  ///   context (BuildContext): The BuildContext of the widget that is using the StreamBuilder.
   void _subscribe(BuildContext context) {
-    stream.listen((event) {
+    wm.controller.listen((event) {
       container.value = event;
       (context as Element).markNeedsBuild();
     });

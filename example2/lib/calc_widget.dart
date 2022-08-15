@@ -3,10 +3,13 @@ import 'package:sbeu_reactive_pattern/sbeu_reactive_pattern.dart';
 import 'calc_wm.dart';
 
 class CalcWidget extends ReactiveWidget<int> {
-  CalcWidget({required super.wm, Key? key})
-      : super(stream: wm.controller, key: key);
+  CalcWidget({Key? key})
+      : super(
+          key: key,
+          wm: CalcWidgetModel(),
+        );
 
-CalcWidgetModel get model => wm as CalcWidgetModel;
+  CalcWidgetModel get model => wm as CalcWidgetModel;
 
   @override
   Widget build(BuildContext context) {
