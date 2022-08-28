@@ -1,42 +1,26 @@
-import 'dart:math';
-
 import 'package:example/test_wm.dart';
 import 'package:flutter/material.dart';
 import 'package:sbeu_reactive_pattern/sbeu_reactive_pattern.dart';
 
-class TestWidget extends ReactiveWidget<Color> {
-  TestWidget({
-    super.initialValue,
-    super.key,
-  }) : super(
-          wm: TestWidgetModel(),
-        );
-
-  TestWidgetModel get model => (wm as TestWidgetModel);
+class TestWidget extends ReactiveWidget<Color, TestWidgetModel> {
+  const TestWidget({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    if (needInitializeStream.value!) initState(context);
+  Widget contentBuilder(BuildContext context, Color data, TestWidgetModel wm) {
     return Scaffold(
       body: Center(
         child: SizedBox(
           height: 200,
           width: 200,
           child: ColoredBox(
-            color: container.value ?? Colors.amber,
+            color: data,
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(onPressed: () {
-        model.event(
-          Color.fromARGB(
-            Random().nextInt(255),
-            Random().nextInt(255),
-            Random().nextInt(255),
-            Random().nextInt(255),
-          ),
-        );
-      }),
+      floatingActionButton: FloatingActionButton(onPressed: wm.updateColor),
     );
   }
+
+  @override
+  TestWidgetModel widgetModelBuilder(BuildContext context) => TestWidgetModel();
 }
