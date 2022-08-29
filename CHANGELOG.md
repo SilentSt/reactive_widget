@@ -16,3 +16,8 @@ first version of the library
 * now you need to create methods in ```ReactiveWidgetModel``` and call them from your ```ReactiveWidget``` as ```wm.someMethod```
 * now you need to set your content builder in special method in ```ReactiveWidget```
 * if you need to get reactive data you need to get ```data``` in ```contentBuilde```
+
+## 0.2.1
+
+* removed provider
+* add initial actions

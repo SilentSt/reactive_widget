@@ -7,6 +7,8 @@ abstract class ReactiveWidgetModel<T> {
   late final T? initialData;
   late final BuildContext context;
 
+  List<Function> get initialActions => [];
+
   Stream<T> get stream => _streamController.stream;
 
   @mustCallSuper
@@ -19,9 +21,12 @@ abstract class ReactiveWidgetModel<T> {
     }
 
     _streamController = setDataSource();
+    for (final action in initialActions) {
+      action();
+    }
   }
 
-  StreamController<T> setDataSource(){
+  StreamController<T> setDataSource() {
     return StreamController.broadcast();
   }
 
