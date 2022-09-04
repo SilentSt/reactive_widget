@@ -25,3 +25,8 @@ first version of the library
 ## 0.2.2
 
 * add custom stream setUp
+
+## 0.2.3
+
+* removed custom stream, instead you can add listener to remote stream which will put value to local stream
+* add docs
