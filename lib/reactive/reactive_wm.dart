@@ -6,21 +6,20 @@ abstract class ReactiveWidgetModel<T> {
   late final StreamController<T> _streamController;
   late final T? initialData;
   late final BuildContext context;
+  late final Stream<T>? _customStream;
 
   List<Function> get initialActions => [];
 
-  Stream<T> get stream => _streamController.stream;
+  Stream<T> get stream => _customStream ?? _streamController.stream;
 
   @mustCallSuper
-  void init(BuildContext context) {
+  Future<void> init(BuildContext context) async {
     this.context = context;
-    if (setInitialData() != null) {
-      initialData = setInitialData();
-    } else {
-      initialData = null;
+    initialData = setInitialData();
+    _customStream = await setCustomStream();
+    if (_customStream == null) {
+      _streamController = setDataSource();
     }
-
-    _streamController = setDataSource();
     for (final action in initialActions) {
       action();
     }
@@ -28,6 +27,10 @@ abstract class ReactiveWidgetModel<T> {
 
   StreamController<T> setDataSource() {
     return StreamController.broadcast();
+  }
+
+  Future<Stream<T>?> setCustomStream() async {
+    return null;
   }
 
   T? setInitialData() {

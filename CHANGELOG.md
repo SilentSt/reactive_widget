@@ -21,3 +21,7 @@ first version of the library
 
 * removed provider
 * add initial actions
+
+## 0.2.2
+
+* add custom stream setUp

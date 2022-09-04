@@ -32,11 +32,15 @@ abstract class ReactiveWidget<T, WM extends ReactiveWidgetModel<T>>
     );
   }
 
+  Future<void> _initialize(WM wm, BuildContext context) async {
+    wm.init(context);
+  }
+
   @protected
   @override
   Widget build(BuildContext context) {
     final wm = widgetModelBuilder(context);
-    wm.init(context);
+    _initialize(wm, context);
     return StreamBuilder<T>(
       initialData: wm.initialData,
       stream: wm.stream,
