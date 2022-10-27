@@ -1,13 +1,11 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 
 import 'reactive_wm.dart';
 
-/// `ReactiveWidget` is autoupdating widget when value of `strem` of your `ReactiveWidgetModel` changes
-abstract class ReactiveWidget<T, WM extends ReactiveWidgetModel<T>>
-    extends StatelessWidget {
-  const ReactiveWidget({
-    Key? key,
-  }) : super(key: key);
+abstract class ReactiveWidget<T, WM extends ReactiveWidgetModel<T>> extends StatefulWidget {
+  const ReactiveWidget({Key? key}) : super(key: key);
 
   /// It`s your content widget which displays what you want, pass here your widget
   Widget contentBuilder(BuildContext context, T data, WM wm);
@@ -23,7 +21,7 @@ abstract class ReactiveWidget<T, WM extends ReactiveWidgetModel<T>>
   }
 
   // It`s optional builder, you can override it if you want to customize your widget has error while loading error
-  Widget errorBuilder(BuildContext context, dynamic error) {
+  Widget errorBuilder(BuildContext context, String error) {
     return Center(
       child: Text(
         'Error $error',
@@ -31,11 +29,24 @@ abstract class ReactiveWidget<T, WM extends ReactiveWidgetModel<T>>
     );
   }
 
-  // It`s optional builder, you can override it if you want to customize your widget when it`s get no data
-  Widget emptyBuilder(BuildContext context) {
-    return const Center(
-      child: Text('No content here'),
-    );
+  @override
+  _ReactiveWidget createState() => _ReactiveWidget<T, WM>();
+}
+
+/// `ReactiveWidget` is autoupdating widget when value of `strem` of your `ReactiveWidgetModel` changes
+class _ReactiveWidget<T, WM extends ReactiveWidgetModel<T>> extends State<ReactiveWidget<T, WM>> {
+  late final WM wm;
+
+  @override
+  void initState() {
+    wm = widget.widgetModelBuilder(context);
+    wm.init(context);
+    // WidgetsBinding.instance.addPostFrameCallback(
+    //   (timeStamp) {
+        
+    //   },
+    // );
+    super.initState();
   }
 
   /// Do not override this function, use instead `contentBuilder`
@@ -43,22 +54,24 @@ abstract class ReactiveWidget<T, WM extends ReactiveWidgetModel<T>>
   @override
   @mustCallSuper
   Widget build(BuildContext context) {
-    final wm = widgetModelBuilder(context);
-    wm.init(context);
     return StreamBuilder<T>(
       initialData: wm.initialData,
       stream: wm.stream,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return errorBuilder(context, snapshot.error);
-        } else if (!snapshot.hasData) {
-          return loadingBuilder(context);
-        } else if (snapshot.data == null) {
-          return emptyBuilder(context);
+          return widget.errorBuilder(context, snapshot.error.toString());
+        } else if (!snapshot.hasData || snapshot.data == null) {
+          return widget.loadingBuilder(context);
         } else {
-          return contentBuilder(context, snapshot.data as T, wm);
+          return widget.contentBuilder(context, snapshot.data as T, wm);
         }
       },
     );
+  }
+
+  @override
+  void dispose() {
+    wm.dispose();
+    super.dispose();
   }
 }

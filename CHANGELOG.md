@@ -30,3 +30,7 @@ first version of the library
 
 * removed custom stream, instead you can add listener to remote stream which will put value to local stream
 * add docs
+
+# 0.2.4
+
+* fixed wm not disposed
