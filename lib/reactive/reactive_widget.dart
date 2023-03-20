@@ -1,77 +1,30 @@
-// ignore_for_file: library_private_types_in_public_api
-
 import 'package:flutter/material.dart';
+import 'package:sbeu_reactive_pattern/sbeu_reactive_pattern.dart';
 
-import 'reactive_wm.dart';
-
-abstract class ReactiveWidget<T, WM extends ReactiveWidgetModel<T>> extends StatefulWidget {
+abstract class ReactiveWidget<T extends ReactiveWidgetModel> extends StatefulWidget {
   const ReactiveWidget({Key? key}) : super(key: key);
 
-  /// It`s your content widget which displays what you want, pass here your widget
-  Widget contentBuilder(BuildContext context, T data, WM wm);
-
-  /// Here you have to initialize your `ReactiveWidgetModel`
-  WM widgetModelBuilder(BuildContext context);
-
-  // It`s optional builder, you can override it if you want to customize your widget loading
-  Widget loadingBuilder(BuildContext context) {
-    return const Center(
-      child: RefreshProgressIndicator(),
-    );
-  }
-
-  // It`s optional builder, you can override it if you want to customize your widget has error while loading error
-  Widget errorBuilder(BuildContext context, String error) {
-    return Center(
-      child: Text(
-        'Error $error',
-      ),
-    );
-  }
+  T widgetModelBuilder(BuildContext context);
+  Widget buildView(BuildContext context, T wm);
 
   @override
-  _ReactiveWidget createState() => _ReactiveWidget<T, WM>();
+  State<ReactiveWidget<T>> createState() => _ReactiveWidgetState<T>();
 }
 
-/// `ReactiveWidget` is autoupdating widget when value of `strem` of your `ReactiveWidgetModel` changes
-class _ReactiveWidget<T, WM extends ReactiveWidgetModel<T>> extends State<ReactiveWidget<T, WM>> {
-  late final WM wm;
+class _ReactiveWidgetState<T extends ReactiveWidgetModel> extends State<ReactiveWidget<T>> {
+  late final T _wm;
 
   @override
   void initState() {
-    wm = widget.widgetModelBuilder(context);
-    wm.init(context);
-    // WidgetsBinding.instance.addPostFrameCallback(
-    //   (timeStamp) {
-        
-    //   },
-    // );
+    _wm = widget.widgetModelBuilder(context);
+    _wm.onReady(context);
     super.initState();
   }
 
-  /// Do not override this function, use instead `contentBuilder`
-  @protected
-  @override
+  /// Do not override this function, use instead `buildView`
   @mustCallSuper
-  Widget build(BuildContext context) {
-    return StreamBuilder<T>(
-      initialData: wm.initialData,
-      stream: wm.stream,
-      builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          return widget.errorBuilder(context, snapshot.error.toString());
-        } else if (!snapshot.hasData || snapshot.data == null) {
-          return widget.loadingBuilder(context);
-        } else {
-          return widget.contentBuilder(context, snapshot.data as T, wm);
-        }
-      },
-    );
-  }
-
   @override
-  void dispose() {
-    wm.dispose();
-    super.dispose();
+  Widget build(BuildContext context) {
+    return widget.buildView(context, _wm);
   }
 }
