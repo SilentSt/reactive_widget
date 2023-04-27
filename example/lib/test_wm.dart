@@ -28,13 +28,5 @@ class TestWidgetModel extends ReactiveWidgetModel {
         },
       ),
     );
-    // colorContainer.update(
-    //   Color.fromARGB(
-    //     Random().nextInt(255),
-    //     Random().nextInt(255),
-    //     Random().nextInt(255),
-    //     Random().nextInt(255),
-    //   ),
-    // );
   }
 }
