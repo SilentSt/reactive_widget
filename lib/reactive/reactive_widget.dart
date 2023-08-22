@@ -32,7 +32,6 @@ class _ReactiveWidgetState<T extends ReactiveWidgetModel> extends State<Reactive
 
   ///
   /// Do not override this function, use instead `buildView`
-  @mustCallSuper
   @override
   Widget build(BuildContext context) {
     return widget.buildView(context, _wm);    
