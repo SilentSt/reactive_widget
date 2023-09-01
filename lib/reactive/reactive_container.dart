@@ -75,6 +75,11 @@ class ReactiveContainer<T> extends ChangeNotifier {
     return true;
   }
 
+  void setBusy(bool val){
+    _isBusy = val;
+    notifyListeners();
+  }
+
   ///если сравниваемый операнд не является `ReactiveContainer<T>`,
   ///то вернется `false`,
   ///иначе будут сравниваться `value` контейнеров
